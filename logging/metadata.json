@@ -1,0 +1,7 @@
+{
+  "model": "qwen2.5:7b-instruct",
+  "parameter_size": "7.61B",
+  "framework": "python 3.10 + pandas (deterministic agents); Ollama local inference cho agent cần reasoning",
+  "runtime": "local via Ollama (http://localhost:11434)",
+  "notes": "Customer Agent, Order & Product Agent, Payment Agent, Delivery Agent la deterministic (join/tinh toan CSV bang pandas, khong goi LLM). Policy Agent va cac buoc can suy luan/ giai thich dung qwen2.5:7b-instruct qua Ollama, tham so <=10B theo yeu cau README muc 9."
+}

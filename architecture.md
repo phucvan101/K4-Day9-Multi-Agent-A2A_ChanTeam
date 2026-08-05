@@ -79,3 +79,11 @@ flowchart TD
 ## 5. Vòng lặp lỗi (retry/reject)
 
 Nếu Verifier Agent phát hiện vi phạm (evidence ID không tồn tại trong CSV, vượt array limit, sai null handling, sai thứ tự secondary issues/actions), case được trả lại Coordinator kèm lý do cụ thể; Coordinator re-dispatch lại đúng agent liên quan (không chạy lại toàn bộ pipeline) rồi gửi lại Verifier. Toàn bộ vòng lặp này được ghi vào `trace.jsonl`.
+
+## 6. Quyết định model & phạm vi dùng LLM
+
+**Model đã chọn**: `qwen2.5:7b-instruct` (7.61B parameters, ≤10B theo ràng buộc README mục 9), chạy local qua Ollama (`http://localhost:11434`). Lý do không dùng `gpt-4o-mini`: OpenAI không công bố param count nên không chứng minh được ≤10B, rủi ro bị chấm là vi phạm hard gate.
+
+**Policy Agent KHÔNG dùng LLM để classify.** Đã test trực tiếp: với 1 case giao hàng sớm hơn `estimated_delivery_date` và seller giao đúng hạn (đáp án đúng phải là `unsupported_late_claim`), Qwen2.5-7B trả lời sai (`valid_split_payment` — nhãn không liên quan gì đến prompt). `EC_POLICY_V2` là bảng quy tắc xác định (deterministic), không có phần nào mơ hồ cần suy luận ngôn ngữ tự nhiên, nên dùng LLM để ra quyết định `primary_issue`/`refund`/`responsible_party` chỉ tạo thêm rủi ro hallucination mà README đã cảnh báo rõ ("ưu tiên dữ liệu có thể kiểm chứng ... không tự tạo ra sự kiện không tồn tại").
+
+→ Policy Agent (Người 3) triển khai bằng Python thuần (if/elif đúng thứ tự ưu tiên bảng), cùng cách tiếp cận đã dùng cho Customer/Order & Product Agent. Model Qwen2.5-7B qua Ollama vẫn giữ lại trong hạ tầng (đã cài, đã pull, đã test gọi API thành công) để dự phòng cho các bước không cần độ chính xác tuyệt đối, ví dụ diễn giải `customer_request.message` bằng ngôn ngữ tự nhiên hoặc sinh mô tả — không dùng cho bất kỳ trường số liệu/ID/enum nào trong output schema.
