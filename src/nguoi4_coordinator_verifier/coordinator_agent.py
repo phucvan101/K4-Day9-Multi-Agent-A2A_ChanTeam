@@ -24,8 +24,8 @@ FRAMEWORK = "python 3.12 + pandas + Ollama"
 RUNTIME = "local via Ollama (127.0.0.1:11434)"
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-TRACE_PATH = BASE_DIR / "logging" / "trace.jsonl"
-METADATA_PATH = BASE_DIR / "logging" / "metadata.json"
+TRACE_PATH = BASE_DIR / "trace.jsonl"
+METADATA_PATH = BASE_DIR / "metadata.json"
 
 
 def load_case(input_path: str) -> CaseContext:
