@@ -58,13 +58,51 @@ class DeliveryAnalysis:
 
 
 @dataclass
+class CaseAssessment:
+    primary_issue: str | None = None
+    secondary_issues: list[str] = field(default_factory=list)
+    case_status: str | None = None
+    confidence: float | None = None
+
+
+@dataclass
+class RootCause:
+    cause_code: str
+    rank: int
+
+
+@dataclass
+class ResponsibleParty:
+    party_type: str
+    party_id: str
+
+
+@dataclass
+class RootCauseAnalysis:
+    ranked_causes: list[RootCause] = field(default_factory=list)
+    responsible_parties: list[ResponsibleParty] = field(default_factory=list)
+
+
+@dataclass
+class FinancialResolution:
+    currency: str = "BRL"
+    recommended_refund_brl: float = 0.0
+
+
+@dataclass
 class CaseContext:
     """Case context dùng chung, Coordinator (nguoi4) khởi tạo và truyền qua từng agent."""
 
     case_id: str
     claimed_order_id: str
+    order_status: str | None = None
     customer_context: CustomerContext = field(default_factory=CustomerContext)
     product_context: ProductContext = field(default_factory=ProductContext)
     affected_entities: AffectedEntities = field(default_factory=AffectedEntities)
     payment_reconciliation: PaymentReconciliation = field(default_factory=PaymentReconciliation)
     delivery_analysis: DeliveryAnalysis = field(default_factory=DeliveryAnalysis)
+    case_assessment: CaseAssessment = field(default_factory=CaseAssessment)
+    root_cause_analysis: RootCauseAnalysis = field(default_factory=RootCauseAnalysis)
+    evidence_ids: list[str] = field(default_factory=list)
+    financial_resolution: FinancialResolution = field(default_factory=FinancialResolution)
+    resolution_actions: list[str] = field(default_factory=list)
