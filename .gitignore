@@ -1,0 +1,27 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node (nếu có tooling JS phụ trợ)
+node_modules/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Logs / run artifacts cục bộ (không phải trace.jsonl nộp bài)
+*.log
